@@ -12,48 +12,20 @@ import {
   BarChart,
   Bar,
 } from "recharts";
-import { TrendingUp, Users, DollarSign, Eye } from "lucide-react";
-import { growthData } from "@/data/mock";
-import { cn, formatNumber, formatCurrency } from "@/lib/utils";
+import { TrendingUp, Clock } from "lucide-react";
+import { followerGrowth, engagementByDay, bestTimes } from "@/data/mock";
+import { formatNumber } from "@/lib/utils";
 import { Band, BandTitle } from "@/components/ui/band";
-
-const kpis = [
-  { label: "Follower Growth", value: "+38.2K", subtext: "last 12 months", icon: Users, color: "text-brand-teal" },
-  { label: "Donation Growth", value: "+55%", subtext: "$31K → $48.2K", icon: DollarSign, color: "text-brand-gold" },
-  { label: "Reach Growth", value: "+95%", subtext: "1.2M → 2.3M", icon: Eye, color: "text-status-green" },
-];
+import { PlatformIcon } from "@/components/ui/platform-icon";
 
 export function GrowthIntelligence() {
   return (
     <Band id="growth">
-      <BandTitle>Growth Intelligence</BandTitle>
+      <BandTitle>Growth &amp; Analytics</BandTitle>
 
-      {/* KPI strip */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-12">
-        {kpis.map((kpi, i) => (
-          <motion.div
-            key={kpi.label}
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: i * 0.1, duration: 0.4 }}
-            className="flex items-center gap-4 bg-bg-surface/60 border border-white/5 rounded-xl p-5"
-          >
-            <div className={cn("p-2.5 rounded-lg bg-bg-elevated", kpi.color)}>
-              <kpi.icon className="w-5 h-5" />
-            </div>
-            <div>
-              <p className="text-2xl font-light tracking-tight">{kpi.value}</p>
-              <p className="text-xs text-text-dim">{kpi.label}</p>
-              <p className="text-[10px] text-text-dim/60">{kpi.subtext}</p>
-            </div>
-          </motion.div>
-        ))}
-      </div>
-
-      {/* Charts — asymmetric layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
-        {/* Audience growth — wide */}
+      {/* Charts — asymmetric */}
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 mb-8">
+        {/* Follower growth — wide */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -63,31 +35,47 @@ export function GrowthIntelligence() {
         >
           <div className="flex items-center gap-2 mb-6">
             <TrendingUp className="w-4 h-4 text-brand-teal" />
-            <h3 className="text-sm font-medium text-text-muted">Audience Growth</h3>
+            <h3 className="text-sm font-medium text-text-muted">Follower Growth (12 weeks)</h3>
           </div>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={growthData}>
+              <AreaChart data={followerGrowth}>
                 <defs>
-                  <linearGradient id="followerGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#1A535C" stopOpacity={0.4} />
-                    <stop offset="95%" stopColor="#1A535C" stopOpacity={0} />
+                  <linearGradient id="igGrad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#E1306C" stopOpacity={0.3} />
+                    <stop offset="95%" stopColor="#E1306C" stopOpacity={0} />
+                  </linearGradient>
+                  <linearGradient id="ttGrad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#00F2EA" stopOpacity={0.3} />
+                    <stop offset="95%" stopColor="#00F2EA" stopOpacity={0} />
+                  </linearGradient>
+                  <linearGradient id="ytGrad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#FF0000" stopOpacity={0.3} />
+                    <stop offset="95%" stopColor="#FF0000" stopOpacity={0} />
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" stroke="#1A535C22" />
-                <XAxis dataKey="month" tick={{ fill: "#5A7A74", fontSize: 11 }} axisLine={false} tickLine={false} />
+                <XAxis dataKey="week" tick={{ fill: "#5A7A74", fontSize: 11 }} axisLine={false} tickLine={false} />
                 <YAxis tick={{ fill: "#5A7A74", fontSize: 11 }} axisLine={false} tickLine={false} tickFormatter={(v) => formatNumber(v)} />
                 <Tooltip
                   contentStyle={{ background: "#111F22", border: "1px solid #1A535C33", borderRadius: 12, color: "#FAF0E6" }}
-                  formatter={(value: number) => [formatNumber(value), "Followers"]}
+                  formatter={(value: number, name: string) => [formatNumber(value), name === "instagram" ? "Instagram" : name === "tiktok" ? "TikTok" : "YouTube"]}
                 />
-                <Area type="monotone" dataKey="followers" stroke="#1A535C" strokeWidth={2} fill="url(#followerGradient)" />
+                <Area type="monotone" dataKey="tiktok" stroke="#00F2EA" strokeWidth={2} fill="url(#ttGrad)" />
+                <Area type="monotone" dataKey="instagram" stroke="#E1306C" strokeWidth={2} fill="url(#igGrad)" />
+                <Area type="monotone" dataKey="youtube" stroke="#FF0000" strokeWidth={2} fill="url(#ytGrad)" />
               </AreaChart>
             </ResponsiveContainer>
           </div>
+          {/* Legend */}
+          <div className="flex items-center gap-6 mt-4 justify-center">
+            <span className="flex items-center gap-1.5 text-xs text-text-muted"><span className="w-3 h-0.5 bg-[#E1306C] rounded" />Instagram</span>
+            <span className="flex items-center gap-1.5 text-xs text-text-muted"><span className="w-3 h-0.5 bg-[#00F2EA] rounded" />TikTok</span>
+            <span className="flex items-center gap-1.5 text-xs text-text-muted"><span className="w-3 h-0.5 bg-[#FF0000] rounded" />YouTube</span>
+          </div>
         </motion.div>
 
-        {/* Donations — narrow bar chart */}
+        {/* Engagement by day — narrow */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -96,25 +84,47 @@ export function GrowthIntelligence() {
           className="lg:col-span-2 bg-bg-surface border border-white/5 rounded-2xl p-6"
         >
           <div className="flex items-center gap-2 mb-6">
-            <DollarSign className="w-4 h-4 text-brand-gold" />
-            <h3 className="text-sm font-medium text-text-muted">Monthly Donations</h3>
+            <Clock className="w-4 h-4 text-brand-gold" />
+            <h3 className="text-sm font-medium text-text-muted">Engagement by Day</h3>
           </div>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={growthData}>
+              <BarChart data={engagementByDay}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#1A535C22" />
-                <XAxis dataKey="month" tick={{ fill: "#5A7A74", fontSize: 11 }} axisLine={false} tickLine={false} />
-                <YAxis tick={{ fill: "#5A7A74", fontSize: 11 }} axisLine={false} tickLine={false} tickFormatter={(v) => `$${(v / 1000).toFixed(0)}K`} />
+                <XAxis dataKey="day" tick={{ fill: "#5A7A74", fontSize: 11 }} axisLine={false} tickLine={false} />
+                <YAxis tick={{ fill: "#5A7A74", fontSize: 11 }} axisLine={false} tickLine={false} tickFormatter={(v) => `${v}%`} />
                 <Tooltip
                   contentStyle={{ background: "#111F22", border: "1px solid #C9A84C33", borderRadius: 12, color: "#FAF0E6" }}
-                  formatter={(value: number) => [formatCurrency(value), "Donations"]}
+                  formatter={(value: number, name: string) => [`${value}%`, name === "instagram" ? "Instagram" : name === "tiktok" ? "TikTok" : "YouTube"]}
                 />
-                <Bar dataKey="donations" fill="#C9A84C" radius={[4, 4, 0, 0]} opacity={0.8} />
+                <Bar dataKey="tiktok" fill="#00F2EA" radius={[3, 3, 0, 0]} opacity={0.7} />
+                <Bar dataKey="instagram" fill="#E1306C" radius={[3, 3, 0, 0]} opacity={0.7} />
+                <Bar dataKey="youtube" fill="#FF0000" radius={[3, 3, 0, 0]} opacity={0.7} />
               </BarChart>
             </ResponsiveContainer>
           </div>
         </motion.div>
       </div>
+
+      {/* Best posting times */}
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.4 }}
+        className="grid grid-cols-1 sm:grid-cols-3 gap-4"
+      >
+        {(["instagram", "tiktok", "youtube"] as const).map((key) => (
+          <div key={key} className="flex items-center gap-3 bg-bg-surface/60 border border-white/5 rounded-xl p-4">
+            <PlatformIcon platform={key} />
+            <div>
+              <p className="text-xs text-text-dim">Best time to post</p>
+              <p className="text-sm font-medium">{bestTimes[key].best}</p>
+              <p className="text-[10px] text-text-dim">{bestTimes[key].day}s perform best</p>
+            </div>
+          </div>
+        ))}
+      </motion.div>
     </Band>
   );
 }

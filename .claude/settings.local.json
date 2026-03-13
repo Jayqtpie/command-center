@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node -v && npm -v 2>/dev/null; npx --version 2>/dev/null)",
+      "WebSearch",
+      "Skill(gsd:new-project)",
+      "Bash(git -C /c/Users/jay_p/Desktop/comcenter log --oneline 2>/dev/null || echo \"No commits yet\")",
+      "Bash(git add:*)",
+      "Bash(npx create-next-app@latest . --typescript --tailwind --eslint --app --src-dir --import-alias \"@/*\" --use-npm --no-turbopack 2>&1 | tail -20)",
+      "Bash(npx create-next-app@latest temp-next --typescript --tailwind --eslint --app --src-dir --import-alias \"@/*\" --use-npm --no-turbopack 2>&1 | tail -20)",
+      "Bash(npm install:*)",
+      "Bash(npx next:*)",
+      "Bash(git remote:*)",
+      "Bash(git branch:*)",
+      "Bash(git push:*)"
+    ]
+  }
+}

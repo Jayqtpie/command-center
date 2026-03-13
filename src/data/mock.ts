@@ -1,133 +1,232 @@
-// ─── Hero Metrics ───────────────────────────────────────────
-export const heroMetrics = {
-  totalFollowers: { value: 127_400, change: 12.3, label: "Total Followers" },
-  monthlyDonations: { value: 48_200, change: 8.7, label: "Monthly Donations" },
-  contentReach: { value: 2_340_000, change: 23.1, label: "Content Reach" },
-  engagementRate: { value: 4.8, change: -0.3, label: "Engagement Rate", suffix: "%" },
+// ─── Platform Overview ──────────────────────────────────────
+export type Platform = "instagram" | "tiktok" | "youtube";
+
+export const platforms = {
+  instagram: {
+    name: "Instagram",
+    handle: "@guidedbarakah",
+    followers: 84_200,
+    followersChange: 3.2,
+    posts: 342,
+    avgEngagement: 5.1,
+    reachLast30d: 920_000,
+    color: "#E1306C",
+  },
+  tiktok: {
+    name: "TikTok",
+    handle: "@guidedbarakah",
+    followers: 215_600,
+    followersChange: 11.4,
+    posts: 189,
+    avgEngagement: 8.7,
+    reachLast30d: 3_400_000,
+    color: "#00F2EA",
+  },
+  youtube: {
+    name: "YouTube",
+    handle: "@GuidedBarakah",
+    followers: 41_800,
+    followersChange: 5.8,
+    posts: 96,
+    avgEngagement: 4.2,
+    reachLast30d: 680_000,
+    color: "#FF0000",
+  },
 };
 
-// ─── Strategic Initiatives ──────────────────────────────────
-export const initiatives = [
+// ─── Cross-Platform Hero Stats ──────────────────────────────
+export const heroStats = {
+  totalFollowers: 341_600,
+  totalReach30d: 5_000_000,
+  avgEngagement: 6.0,
+  postsThisWeek: 12,
+};
+
+// ─── Follower Growth (12 weeks) ─────────────────────────────
+export const followerGrowth = [
+  { week: "W1", instagram: 78_400, tiktok: 178_000, youtube: 36_200 },
+  { week: "W2", instagram: 79_100, tiktok: 182_500, youtube: 36_900 },
+  { week: "W3", instagram: 79_800, tiktok: 186_200, youtube: 37_400 },
+  { week: "W4", instagram: 80_200, tiktok: 189_800, youtube: 37_800 },
+  { week: "W5", instagram: 80_900, tiktok: 193_400, youtube: 38_200 },
+  { week: "W6", instagram: 81_300, tiktok: 196_000, youtube: 38_700 },
+  { week: "W7", instagram: 81_800, tiktok: 199_200, youtube: 39_100 },
+  { week: "W8", instagram: 82_400, tiktok: 203_000, youtube: 39_600 },
+  { week: "W9", instagram: 82_900, tiktok: 206_400, youtube: 40_100 },
+  { week: "W10", instagram: 83_300, tiktok: 209_800, youtube: 40_800 },
+  { week: "W11", instagram: 83_800, tiktok: 212_500, youtube: 41_300 },
+  { week: "W12", instagram: 84_200, tiktok: 215_600, youtube: 41_800 },
+];
+
+// ─── Engagement by Day (last 7 days) ───────────────────────
+export const engagementByDay = [
+  { day: "Mon", instagram: 4.8, tiktok: 7.9, youtube: 3.8 },
+  { day: "Tue", instagram: 5.2, tiktok: 9.1, youtube: 4.0 },
+  { day: "Wed", instagram: 4.6, tiktok: 8.3, youtube: 4.5 },
+  { day: "Thu", instagram: 5.8, tiktok: 10.2, youtube: 4.1 },
+  { day: "Fri", instagram: 6.1, tiktok: 9.8, youtube: 3.9 },
+  { day: "Sat", instagram: 5.4, tiktok: 8.5, youtube: 4.8 },
+  { day: "Sun", instagram: 4.9, tiktok: 7.6, youtube: 4.3 },
+];
+
+// ─── Recent Posts ───────────────────────────────────────────
+export type PostStatus = "published" | "scheduled" | "draft";
+
+export interface Post {
+  id: number;
+  title: string;
+  platform: Platform;
+  status: PostStatus;
+  type: "reel" | "carousel" | "story" | "video" | "short" | "static";
+  publishedAt: string | null;
+  scheduledFor: string | null;
+  views: number;
+  likes: number;
+  comments: number;
+  shares: number;
+  saves: number;
+  engagementRate: number;
+}
+
+export const recentPosts: Post[] = [
   {
     id: 1,
-    title: "Ramadan Campaign 2026",
-    status: "active" as const,
-    progress: 72,
-    priority: "critical" as const,
-    description: "30-day content series + fundraising push targeting $500K",
-    dueDate: "Apr 2, 2026",
+    title: "The Power of Dhikr — 60s Reminder",
+    platform: "tiktok",
+    status: "published",
+    type: "video",
+    publishedAt: "2h ago",
+    scheduledFor: null,
+    views: 142_000,
+    likes: 18_400,
+    comments: 1_230,
+    shares: 4_500,
+    saves: 8_200,
+    engagementRate: 12.8,
   },
   {
     id: 2,
-    title: "Mobile App Launch",
-    status: "active" as const,
-    progress: 45,
-    priority: "high" as const,
-    description: "iOS & Android app for daily Islamic content delivery",
-    dueDate: "May 15, 2026",
+    title: "5 Sunnah Morning Habits",
+    platform: "instagram",
+    status: "published",
+    type: "carousel",
+    publishedAt: "5h ago",
+    scheduledFor: null,
+    views: 34_200,
+    likes: 4_800,
+    comments: 312,
+    shares: 1_200,
+    saves: 3_400,
+    engagementRate: 7.2,
   },
   {
     id: 3,
-    title: "Podcast Network Expansion",
-    status: "planning" as const,
-    progress: 15,
-    priority: "medium" as const,
-    description: "Launch 3 new podcast verticals: youth, finance, wellness",
-    dueDate: "Jun 30, 2026",
+    title: "Ramadan Prep Vlog — Full Day",
+    platform: "youtube",
+    status: "published",
+    type: "video",
+    publishedAt: "1d ago",
+    scheduledFor: null,
+    views: 28_600,
+    likes: 3_100,
+    comments: 445,
+    shares: 890,
+    saves: 1_200,
+    engagementRate: 5.4,
   },
   {
     id: 4,
-    title: "Community Platform Migration",
-    status: "active" as const,
-    progress: 60,
-    priority: "high" as const,
-    description: "Move from Discord to custom community platform",
-    dueDate: "Apr 20, 2026",
-  },
-];
-
-// ─── Growth Data (12 months) ────────────────────────────────
-export const growthData = [
-  { month: "Apr", followers: 89_200, donations: 31_000, reach: 1_200_000 },
-  { month: "May", followers: 92_100, donations: 33_500, reach: 1_350_000 },
-  { month: "Jun", followers: 95_800, donations: 32_800, reach: 1_280_000 },
-  { month: "Jul", followers: 98_400, donations: 35_200, reach: 1_420_000 },
-  { month: "Aug", followers: 101_000, donations: 36_800, reach: 1_510_000 },
-  { month: "Sep", followers: 104_300, donations: 38_100, reach: 1_680_000 },
-  { month: "Oct", followers: 108_200, donations: 40_500, reach: 1_850_000 },
-  { month: "Nov", followers: 112_500, donations: 42_200, reach: 1_960_000 },
-  { month: "Dec", followers: 116_800, donations: 44_800, reach: 2_100_000 },
-  { month: "Jan", followers: 119_600, donations: 43_500, reach: 2_050_000 },
-  { month: "Feb", followers: 123_400, donations: 45_900, reach: 2_200_000 },
-  { month: "Mar", followers: 127_400, donations: 48_200, reach: 2_340_000 },
-];
-
-// ─── Content Performance ────────────────────────────────────
-export const topContent = [
-  {
-    id: 1,
-    title: "The Power of Dhikr in Daily Life",
-    type: "video" as const,
-    views: 342_000,
-    engagement: 6.2,
+    title: "Quick Dua for Anxiety",
+    platform: "tiktok",
+    status: "published",
+    type: "video",
+    publishedAt: "1d ago",
+    scheduledFor: null,
+    views: 289_000,
+    likes: 41_200,
+    comments: 3_800,
     shares: 12_400,
-    trend: "up" as const,
-    publishedDaysAgo: 3,
-  },
-  {
-    id: 2,
-    title: "Islamic Finance: A Beginner's Guide",
-    type: "article" as const,
-    views: 198_000,
-    engagement: 5.8,
-    shares: 8_200,
-    trend: "up" as const,
-    publishedDaysAgo: 7,
-  },
-  {
-    id: 3,
-    title: "Ramadan Prep: 30 Days of Barakah",
-    type: "carousel" as const,
-    views: 156_000,
-    engagement: 7.1,
-    shares: 15_800,
-    trend: "up" as const,
-    publishedDaysAgo: 5,
-  },
-  {
-    id: 4,
-    title: "Weekly Khutbah: Patience in Adversity",
-    type: "podcast" as const,
-    views: 87_000,
-    engagement: 4.5,
-    shares: 3_200,
-    trend: "stable" as const,
-    publishedDaysAgo: 2,
+    saves: 22_000,
+    engagementRate: 15.1,
   },
   {
     id: 5,
-    title: "Community Spotlight: Youth Programs",
-    type: "video" as const,
-    views: 64_000,
-    engagement: 5.1,
-    shares: 2_800,
-    trend: "down" as const,
-    publishedDaysAgo: 10,
+    title: "Islamic Finance Basics — Part 3",
+    platform: "youtube",
+    status: "published",
+    type: "video",
+    publishedAt: "3d ago",
+    scheduledFor: null,
+    views: 15_200,
+    likes: 1_800,
+    comments: 210,
+    shares: 340,
+    saves: 620,
+    engagementRate: 4.1,
+  },
+  {
+    id: 6,
+    title: "Fasting Benefits — Infographic",
+    platform: "instagram",
+    status: "published",
+    type: "static",
+    publishedAt: "3d ago",
+    scheduledFor: null,
+    views: 21_000,
+    likes: 3_200,
+    comments: 178,
+    shares: 940,
+    saves: 2_800,
+    engagementRate: 6.8,
   },
 ];
 
-// ─── Operations / Systems Health ────────────────────────────
-export const systems = [
-  { name: "Website", status: "operational" as const, uptime: 99.98, lastIncident: null },
-  { name: "Email Service", status: "operational" as const, uptime: 99.95, lastIncident: "Feb 28" },
-  { name: "Payment Gateway", status: "operational" as const, uptime: 99.99, lastIncident: null },
-  { name: "CDN / Media", status: "degraded" as const, uptime: 98.70, lastIncident: "Mar 12" },
-  { name: "Analytics Pipeline", status: "operational" as const, uptime: 99.90, lastIncident: "Mar 1" },
-  { name: "Community Platform", status: "operational" as const, uptime: 99.80, lastIncident: "Mar 5" },
+export const scheduledPosts: Post[] = [
+  {
+    id: 101,
+    title: "Taraweeh Night Routine",
+    platform: "tiktok",
+    status: "scheduled",
+    type: "video",
+    publishedAt: null,
+    scheduledFor: "Today, 7:00 PM",
+    views: 0, likes: 0, comments: 0, shares: 0, saves: 0, engagementRate: 0,
+  },
+  {
+    id: 102,
+    title: "Best Quran Apps 2026",
+    platform: "instagram",
+    status: "scheduled",
+    type: "carousel",
+    publishedAt: null,
+    scheduledFor: "Tomorrow, 12:00 PM",
+    views: 0, likes: 0, comments: 0, shares: 0, saves: 0, engagementRate: 0,
+  },
+  {
+    id: 103,
+    title: "Community Q&A — Live",
+    platform: "youtube",
+    status: "scheduled",
+    type: "video",
+    publishedAt: null,
+    scheduledFor: "Mar 15, 3:00 PM",
+    views: 0, likes: 0, comments: 0, shares: 0, saves: 0, engagementRate: 0,
+  },
+  {
+    id: 104,
+    title: "Hadith of the Day Series",
+    platform: "tiktok",
+    status: "draft",
+    type: "video",
+    publishedAt: null,
+    scheduledFor: null,
+    views: 0, likes: 0, comments: 0, shares: 0, saves: 0, engagementRate: 0,
+  },
 ];
 
-export const recentAlerts = [
-  { id: 1, message: "CDN latency spike detected — media delivery 2.3s above baseline", severity: "warning" as const, time: "2h ago" },
-  { id: 2, message: "Email bounce rate elevated (3.2%) on Ramadan campaign blast", severity: "info" as const, time: "6h ago" },
-  { id: 3, message: "Scheduled maintenance: Analytics pipeline migration tonight 2-4 AM EST", severity: "info" as const, time: "1d ago" },
-];
+// ─── Best Posting Times ─────────────────────────────────────
+export const bestTimes = {
+  instagram: { best: "12 PM — 2 PM", day: "Thursday" },
+  tiktok: { best: "6 PM — 9 PM", day: "Thursday" },
+  youtube: { best: "2 PM — 5 PM", day: "Saturday" },
+};
