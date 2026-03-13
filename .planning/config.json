@@ -1,0 +1,11 @@
+{
+  "project": "GuidedBarakah Command Center",
+  "mode": "YOLO",
+  "granularity": "coarse",
+  "parallelization": true,
+  "git_tracking": true,
+  "research": false,
+  "plan_check": false,
+  "verifier": false,
+  "model_profile": "balanced"
+}
