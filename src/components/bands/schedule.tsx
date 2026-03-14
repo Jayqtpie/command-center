@@ -3,10 +3,12 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Calendar, Clock, FileEdit, Send, Plus, X, Trash2, GripVertical } from "lucide-react";
-import { scheduledPosts, type Platform, type Post, type PostStatus } from "@/data/mock";
+import { type Platform, type Post, type PostStatus } from "@/data/mock";
+import { useData } from "@/lib/data-context";
 import { cn } from "@/lib/utils";
 import { Band, BandTitle } from "@/components/ui/band";
 import { PlatformIcon } from "@/components/ui/platform-icon";
+import { EditableText } from "@/components/ui/editable";
 
 const typeLabels: Record<string, string> = {
   reel: "Reel", carousel: "Carousel", story: "Story", video: "Video", short: "Short", static: "Static",
@@ -19,7 +21,7 @@ const statusConfig = {
 };
 
 export function Schedule() {
-  const [posts, setPosts] = useState<Post[]>(scheduledPosts);
+  const { scheduledPosts: posts, setScheduledPosts: setPosts } = useData();
   const [showComposer, setShowComposer] = useState(false);
   const [newTitle, setNewTitle] = useState("");
   const [newPlatform, setNewPlatform] = useState<Platform>("instagram");
@@ -188,7 +190,11 @@ export function Schedule() {
                   <GripVertical className="w-4 h-4 text-text-dim/30 shrink-0" />
                   <PlatformIcon platform={post.platform} />
                   <div className="flex-1 min-w-0">
-                    <h4 className="text-sm font-medium truncate">{post.title}</h4>
+                    <EditableText
+                      value={post.title}
+                      onSave={(v) => setPosts((prev) => prev.map((p) => p.id === post.id ? { ...p, title: v } : p))}
+                      className="text-sm font-medium truncate"
+                    />
                     <p className="text-[10px] text-text-dim">{typeLabels[post.type]}</p>
                   </div>
                   <div className="flex items-center gap-2 shrink-0">
@@ -233,7 +239,11 @@ export function Schedule() {
                 >
                   <PlatformIcon platform={post.platform} size="sm" />
                   <div className="flex-1 min-w-0">
-                    <h4 className="text-sm font-medium truncate">{post.title}</h4>
+                    <EditableText
+                      value={post.title}
+                      onSave={(v) => setPosts((prev) => prev.map((p) => p.id === post.id ? { ...p, title: v } : p))}
+                      className="text-sm font-medium truncate"
+                    />
                     <p className="text-[10px] text-text-dim">{typeLabels[post.type]}</p>
                   </div>
                   <div className="flex items-center gap-1">

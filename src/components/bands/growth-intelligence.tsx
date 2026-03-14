@@ -14,7 +14,8 @@ import {
   Bar,
 } from "recharts";
 import { TrendingUp, Clock, Eye, EyeOff } from "lucide-react";
-import { followerGrowth, engagementByDay, bestTimes, type Platform } from "@/data/mock";
+import { type Platform } from "@/data/mock";
+import { useData } from "@/lib/data-context";
 import { cn, formatNumber } from "@/lib/utils";
 import { Band, BandTitle } from "@/components/ui/band";
 import { PlatformIcon } from "@/components/ui/platform-icon";
@@ -26,6 +27,7 @@ const platformMeta = {
 };
 
 export function GrowthIntelligence() {
+  const { followerGrowth, engagementByDay, bestTimes } = useData();
   const [visiblePlatforms, setVisiblePlatforms] = useState<Set<Platform>>(
     new Set(["instagram", "tiktok", "youtube"])
   );
