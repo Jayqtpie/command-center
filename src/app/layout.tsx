@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { Header } from "@/components/header";
+import { TabNav } from "@/components/tab-nav";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -23,6 +25,10 @@ export default function RootLayout({
         />
         {/* Accent strip */}
         <div className="h-[3px] bg-gradient-to-r from-terracotta-dark via-terracotta to-terracotta-dark" />
+        <div className="px-9 pt-7">
+          <Header />
+          <TabNav />
+        </div>
         <main>{children}</main>
       </body>
     </html>
