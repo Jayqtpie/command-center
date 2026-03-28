@@ -1,0 +1,23 @@
+@import "tailwindcss";
+
+@config "../../tailwind.config.ts";
+
+:root {
+  --bg-primary: #f5f0eb;
+  --bg-secondary: #ece5dc;
+  --text-primary: #1a1a1a;
+  --text-secondary: #999999;
+  --text-muted: #888888;
+  --accent: #c67a3c;
+  --accent-dark: #b5693a;
+  --accent-light: #d4956a;
+  --border: #e0d8cf;
+  --success: #4ade80;
+  --font-serif: "Palatino Linotype", Palatino, Georgia, serif;
+}
+
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: system-ui, -apple-system, sans-serif;
+}
