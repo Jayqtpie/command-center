@@ -1,8 +1,7 @@
-import { MetricsRow } from "@/components/metrics-row";
-import { GoalTracker } from "@/components/goal-tracker";
 import { LatestPost } from "@/components/latest-post";
 import { EngagementTimer } from "@/components/engagement-timer";
 import { EngagementChecklist } from "@/components/engagement-checklist";
+import { MetricsHydrator } from "@/components/metrics-hydrator";
 import { getSnapshot, getConfig } from "@/lib/kv";
 import type { InstagramMetrics, Post, ChecklistItem } from "@/lib/types";
 
@@ -78,37 +77,19 @@ export default async function InstagramPage() {
         <EngagementChecklist items={checklist} />
       </div>
 
-      {/* Metrics */}
-      <MetricsRow
-        items={[
-          {
-            label: "Followers",
-            value: metrics.followers.toLocaleString(),
-            change: `+${metrics.monthlyChange} this month`,
-          },
-          { label: "28D Reach", value: metrics.reach28d.toLocaleString() },
-          {
-            label: "Accounts Engaged",
-            value: metrics.accountsEngaged28d.toLocaleString(),
-          },
-          { label: "Eng. Rate", value: `${metrics.engagementRate}%` },
+      {/* Metrics + Goal (hydrated from localStorage if KV unavailable) */}
+      <MetricsHydrator
+        platform="ig"
+        platformName="Instagram"
+        defaultMetrics={metrics as unknown as Record<string, unknown>}
+        defaultGoal={goals?.instagram ?? { target: 25000, label: "25K" }}
+        columns={[
+          { label: "Followers", key: "followers", changeKey: "monthlyChange" },
+          { label: "28D Reach", key: "reach28d" },
+          { label: "Accounts Engaged", key: "accountsEngaged28d" },
+          { label: "Eng. Rate", key: "engagementRate", suffix: "%" },
         ]}
       />
-
-      {/* Goal */}
-      {goals?.instagram && (
-        <div className="px-9 py-7">
-          <div className="text-[10px] tracking-[2px] uppercase text-[--text-secondary] mb-5">
-            Goal
-          </div>
-          <GoalTracker
-            platform="Instagram"
-            current={metrics.followers}
-            target={goals.instagram.target}
-            label={goals.instagram.label}
-          />
-        </div>
-      )}
 
       {/* Latest Post */}
       {latestPost && <LatestPost post={latestPost} platform="instagram" />}

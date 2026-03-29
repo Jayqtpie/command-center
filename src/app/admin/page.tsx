@@ -23,12 +23,25 @@ export default function AdminPage() {
     if (reach) metrics.reach28d = parseInt(reach, 10);
     if (engagement) metrics.engagement28d = parseInt(engagement, 10);
 
-    const res = await fetch("/api/admin", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ action: "update-metrics", platform, metrics }),
-    });
-    setStatus(res.ok ? "Saved!" : "Error saving");
+    // Always save to localStorage so platform pages can read it
+    const existing = JSON.parse(localStorage.getItem(`cc:metrics:${platform}`) || "{}");
+    localStorage.setItem(`cc:metrics:${platform}`, JSON.stringify({
+      ...existing,
+      ...metrics,
+      source: "manual",
+      updatedAt: new Date().toISOString(),
+    }));
+
+    try {
+      await fetch("/api/admin", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "update-metrics", platform, metrics }),
+      });
+    } catch {
+      // KV unavailable — localStorage is the fallback
+    }
+    setStatus("Saved!");
     setTimeout(() => setStatus(""), 2000);
   }
 
@@ -43,12 +56,20 @@ export default function AdminPage() {
       },
       checklist: [],
     };
-    const res = await fetch("/api/admin", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ action: "update-config", config }),
-    });
-    setStatus(res.ok ? "Goals saved!" : "Error saving");
+
+    // Always save to localStorage
+    localStorage.setItem("cc:config", JSON.stringify(config));
+
+    try {
+      await fetch("/api/admin", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "update-config", config }),
+      });
+    } catch {
+      // KV unavailable — localStorage is the fallback
+    }
+    setStatus("Goals saved!");
     setTimeout(() => setStatus(""), 2000);
   }
 

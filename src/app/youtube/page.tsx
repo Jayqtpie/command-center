@@ -1,6 +1,5 @@
-import { MetricsRow } from "@/components/metrics-row";
-import { GoalTracker } from "@/components/goal-tracker";
 import { LatestPost } from "@/components/latest-post";
+import { MetricsHydrator } from "@/components/metrics-hydrator";
 import { getSnapshot, getConfig } from "@/lib/kv";
 import type { YouTubeMetrics, Post } from "@/lib/types";
 
@@ -55,32 +54,19 @@ export default async function YouTubePage() {
 
   return (
     <>
-      <MetricsRow
-        items={[
-          {
-            label: "Subscribers",
-            value: metrics.subscribers.toLocaleString(),
-            change: `+${metrics.monthlyChange} this month`,
-          },
-          { label: "28D Views", value: metrics.views28d.toLocaleString() },
-          { label: "Watch Time", value: `${metrics.watchTimeHours.toLocaleString()} hrs` },
-          { label: "Avg Duration", value: metrics.avgViewDuration },
+      <MetricsHydrator
+        platform="yt"
+        platformName="YouTube"
+        defaultMetrics={metrics as unknown as Record<string, unknown>}
+        defaultGoal={goals?.youtube ?? { target: 10000, label: "10K" }}
+        followerKey="subscribers"
+        columns={[
+          { label: "Subscribers", key: "subscribers", changeKey: "monthlyChange" },
+          { label: "28D Views", key: "views28d" },
+          { label: "Watch Time", key: "watchTimeHours", suffix: " hrs" },
+          { label: "Avg Duration", key: "avgViewDuration", format: "string" },
         ]}
       />
-
-      {goals?.youtube && (
-        <div className="px-9 py-7">
-          <div className="text-[10px] tracking-[2px] uppercase text-[--text-secondary] mb-5">
-            Goal
-          </div>
-          <GoalTracker
-            platform="YouTube"
-            current={metrics.subscribers}
-            target={goals.youtube.target}
-            label={goals.youtube.label}
-          />
-        </div>
-      )}
 
       {latestPost && <LatestPost post={latestPost} platform="youtube" />}
     </>

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Header } from "@/components/header";
 import { TabNav } from "@/components/tab-nav";
+import { LocalDataProvider } from "@/components/local-data-provider";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -29,7 +30,9 @@ export default function RootLayout({
           <Header />
           <TabNav />
         </div>
-        <main>{children}</main>
+        <main>
+          <LocalDataProvider>{children}</LocalDataProvider>
+        </main>
       </body>
     </html>
   );

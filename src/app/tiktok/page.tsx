@@ -1,6 +1,5 @@
-import { MetricsRow } from "@/components/metrics-row";
-import { GoalTracker } from "@/components/goal-tracker";
 import { LatestPost } from "@/components/latest-post";
+import { MetricsHydrator } from "@/components/metrics-hydrator";
 import { getSnapshot, getConfig } from "@/lib/kv";
 import type { TikTokMetrics, Post } from "@/lib/types";
 
@@ -54,32 +53,18 @@ export default async function TikTokPage() {
 
   return (
     <>
-      <MetricsRow
-        items={[
-          {
-            label: "Followers",
-            value: metrics.followers.toLocaleString(),
-            change: `+${metrics.monthlyChange} this month`,
-          },
-          { label: "28D Views", value: metrics.views28d.toLocaleString() },
-          { label: "Total Likes", value: metrics.totalLikes.toLocaleString() },
-          { label: "Avg Watch Time", value: metrics.avgWatchTime },
+      <MetricsHydrator
+        platform="tt"
+        platformName="TikTok"
+        defaultMetrics={metrics as unknown as Record<string, unknown>}
+        defaultGoal={goals?.tiktok ?? { target: 50000, label: "50K" }}
+        columns={[
+          { label: "Followers", key: "followers", changeKey: "monthlyChange" },
+          { label: "28D Views", key: "views28d" },
+          { label: "Total Likes", key: "totalLikes" },
+          { label: "Avg Watch Time", key: "avgWatchTime", format: "string" },
         ]}
       />
-
-      {goals?.tiktok && (
-        <div className="px-9 py-7">
-          <div className="text-[10px] tracking-[2px] uppercase text-[--text-secondary] mb-5">
-            Goal
-          </div>
-          <GoalTracker
-            platform="TikTok"
-            current={metrics.followers}
-            target={goals.tiktok.target}
-            label={goals.tiktok.label}
-          />
-        </div>
-      )}
 
       {latestPost && <LatestPost post={latestPost} platform="tiktok" />}
     </>
